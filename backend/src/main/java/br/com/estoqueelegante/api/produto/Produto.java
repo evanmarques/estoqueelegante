@@ -7,27 +7,34 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "products")
-@Entity(name = "Produto")
-@Getter
+@Data // Combina @Getter, @Setter, @EqualsAndHashCode, @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@Entity // Mapeia esta classe para uma entidade JPA
+@Table(name = "products") // Mapeia para a tabela "products"
 public class Produto {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-    private double price;
 
-    // Adicione esta anotação para forçar o nome da coluna em camelCase
-    @Column(name = "quantitystock")
-    private int quantityStock;
+    // O campo em Java se chama "nome", mas no banco a coluna será "name"
+    @Column(name = "name")
+    private String nome;
 
+    @Column(name = "description")
+    private String descricao;
+
+    @Column(name = "price")
+    private double preco;
+
+    // O campo em Java é "quantidadeEstoque", mas a coluna será "stock_quantity"
+    @Column(name = "stock_quantity")
+    private int quantidadeEstoque;
+
+    @Column(name = "bar_code", unique = true)
     private String barcode;
 }

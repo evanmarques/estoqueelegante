@@ -1,0 +1,18 @@
+###
+# @name cadastrarProduto
+# Requisição para cadastrar um novo produto
+POST http://localhost:8080/produtos
+Content-Type: application/json
+
+{
+  "nome": "Brinco de Prata 925",
+  "descricao": "Brinco argola de prata com design moderno",
+  "preco": 129.90,
+  "quantidadeEstoque": 15,
+  "barcode": "7890123456789"
+}
+
+###
+# @name listarProdutos
+# Requisição para listar todos os produtos
+GET http://localhost:8080/produtos

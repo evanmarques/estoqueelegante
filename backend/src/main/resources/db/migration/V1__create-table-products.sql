@@ -3,6 +3,6 @@ CREATE TABLE products (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE PRECISION NOT NULL,
-    quantitystock INTEGER NOT NULL,
-    barcode VARCHAR(255) NOT NULL
+    stock_quantity INTEGER NOT NULL,
+    bar_code VARCHAR(255) UNIQUE NOT NULL
 );
