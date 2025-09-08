@@ -9,8 +9,7 @@ const routes: Routes = [
   // CORREÇÃO APLICADA AQUI
   {
     path: 'admin',
-    // Agora, em vez de carregar um módulo, carregamos as ROTAS FILHAS do menu.
-    // Isso fará com que o Angular carregue o MenuPage e suas sub-rotas corretamente.
+    // Agora carregamos o ARQUIVO DE ROTAS do menu, não o componente diretamente.
     loadChildren: () => import('./admin/menu/menu.routes').then( m => m.routes)
   }
 ];
