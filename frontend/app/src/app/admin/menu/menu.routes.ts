@@ -15,6 +15,10 @@ export const routes: Routes = [
         loadComponent: () => import('../pages/produto-cadastro/produto-cadastro.page').then( m => m.ProdutoCadastroPage)
       },
       {
+        path: 'produtos/editar/:id',
+        loadComponent: () => import('../pages/produto-editar/produto-editar.page').then( m => m.ProdutoEditarPage)
+      },
+      {
         path: '',
         redirectTo: 'produtos',
         pathMatch: 'full'

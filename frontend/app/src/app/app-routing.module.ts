@@ -11,7 +11,7 @@ const routes: Routes = [
     path: 'admin',
     // Agora carregamos o ARQUIVO DE ROTAS do menu, não o componente diretamente.
     loadChildren: () => import('./admin/menu/menu.routes').then( m => m.routes)
-  }
+  },
 ];
 @NgModule({
   imports: [

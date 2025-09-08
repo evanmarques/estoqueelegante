@@ -7,7 +7,6 @@ export interface Produto {
   nome: string;
   descricao: string;
   preco: number;
-  // Corrigido para corresponder ao backend
   quantidadeEstoque: number;
   barcode: string;
 }
@@ -25,8 +24,22 @@ export class ProdutoService {
     return this.http.get<Produto[]>(this.apiUrl);
   }
 
-  // NOVO MÉTODO ADICIONADO AQUI
   cadastrar(produto: any): Observable<any> {
     return this.http.post(this.apiUrl, produto);
+  }
+
+    // Busca um único produto pelo seu ID
+  buscarPorId(id: number): Observable<Produto> {
+    return this.http.get<Produto>(`${this.apiUrl}/${id}`);
+  }
+
+  // Envia os dados atualizados para o backend
+  atualizar(id: number, produto: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, produto);
+  }
+
+  // Envia o pedido de exclusão para o backend
+  excluir(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

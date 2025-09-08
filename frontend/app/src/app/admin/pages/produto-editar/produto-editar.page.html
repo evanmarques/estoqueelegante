@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/produtos"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Editar Produto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="salvar()" #form="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-input
+          label="Nome do Produto"
+          labelPlacement="floating"
+          name="nome"
+          [(ngModel)]="produto.nome"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Descrição"
+          labelPlacement="floating"
+          name="descricao"
+          [(ngModel)]="produto.descricao"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Preço"
+          labelPlacement="floating"
+          type="number"
+          name="preco"
+          [(ngModel)]="produto.preco"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Quantidade em Estoque"
+          labelPlacement="floating"
+          type="number"
+          name="quantidadeEstoque"
+          [(ngModel)]="produto.quantidadeEstoque"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Código de Barras"
+          labelPlacement="floating"
+          name="barcode"
+          [(ngModel)]="produto.barcode"
+          required
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button expand="block" type="submit" [disabled]="form.invalid">
+        Salvar Alterações
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
