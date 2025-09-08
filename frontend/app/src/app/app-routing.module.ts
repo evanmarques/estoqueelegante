@@ -3,8 +3,14 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
+    path: '', // Rota raiz carrega a vitrine (Tabs)
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  // CORREÇÃO APLICADA AQUI
+  {
+    path: 'admin',
+    // Trocamos 'loadChildren' por 'loadComponent' para carregar a página standalone do menu
+    loadComponent: () => import('./admin/menu/menu.page').then( m => m.MenuPage)
   }
 ];
 @NgModule({

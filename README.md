@@ -1,72 +1,61 @@
-# Estoque Elegante: Plataforma de Gestão de Vendas e Estoque
+# Estoque Elegante: Plataforma de E-commerce
 
 ## Visão Geral do Projeto
 
-O 'Estoque Elegante' é uma plataforma completa para a gestão de negócios de joias, perfumes e maquiagens. O objetivo é fornecer um sistema acessível por aplicativo Android, executável para Windows e um site, automatizando o controle de estoque e facilitando o processo de vendas.
+O 'Estoque Elegante' é uma plataforma de e-commerce completa, projetada para a venda de joias, perfumes e maquiagens. O objetivo é fornecer uma experiência de loja virtual (Storefront) elegante e responsiva para os clientes, combinada com um poderoso Painel de Controle (Admin Dashboard) para o vendedor gerenciar todo o negócio.
 
-O projeto será construído com foco em tecnologias gratuitas e de código aberto, aproveitando o conhecimento existente em Java e PostgreSQL, e desenvolvendo novas habilidades em **Angular**.
+A plataforma será primariamente uma aplicação web acessível por qualquer navegador, com planos futuros para ser distribuída como um aplicativo de desktop (Windows) e mobile (Android).
 
 ## Requisitos Funcionais
 
-* **Controle de Acesso:** Autenticação de usuários usando o **Firebase Authentication**.
-* **Catálogo de Produtos:** Adição, edição e remoção de produtos, com detalhes como nome, descrição, preço, quantidade em estoque e imagens. As imagens serão armazenadas no **Firebase Storage**.
-* **Gestão de Estoque:** Atualização automática do estoque após cada venda e alertas para produtos com estoque baixo.
-* **Processamento de Vendas:** Registro de vendas, cálculo de totais e histórico de transações.
-* **Gerenciamento de Clientes:** Cadastro e visualização de dados de clientes.
+### Módulo 1: Vitrine da Loja (Storefront - Público)
+
+* **Página Inicial:** Apresentação da marca e produtos em destaque.
+* **Galeria de Produtos:** Visualização de todos os produtos com fotos, nome e preço.
+* **Página de Detalhes do Produto:** Visão completa de um produto com múltiplas fotos, descrição detalhada e preço.
+* **Busca de Produtos:** Ferramenta para que clientes encontrem produtos facilmente.
+* **(Futuro) Carrinho de Compras e Checkout.**
+
+### Módulo 2: Painel de Controle (Admin - Privado)
+
+* **Autenticação Segura:** Controle de acesso ao painel usando **Firebase Authentication**.
+* **Dashboard Principal:** Visão geral das vendas, estoque baixo e atividade recente.
+* **Gestão de Produtos (CRUD):**
+    * Cadastro, visualização, edição e remoção de produtos.
+    * Upload de imagens dos produtos via **Firebase Storage**.
+    * Controle de estoque com atualização automática.
+* **Gestão de Vendas:** Histórico de transações e detalhes de cada venda.
+* **Gestão de Clientes:** Cadastro e visualização de dados de clientes.
 
 ## Arquitetura do Sistema
 
-O projeto adota uma arquitetura completa, dividida em Frontend e Backend, para garantir uma estrutura modular e escalável.
+O projeto adota uma arquitetura de aplicação de página única (SPA) com um backend robusto.
 
 ### Frontend (Interface do Usuário)
 
-* **Tecnologia Principal:** **Angular** (com TypeScript).
+* **Tecnologia Principal:** **Angular** com o **Ionic Framework** para garantir responsividade e uma base de componentes de alta qualidade.
 * **Distribuição:**
-    * **Site:** Aplicação web padrão gerada pelo Angular.
-    * **Aplicativo Android:** Usando o **Ionic Framework** para compilar o código Angular em um APK nativo.
-    * **Executável Windows:** Usando **Electron** para empacotar a aplicação web Angular.
-* **Função:** Prover uma interface intuitiva e responsiva para que o usuário possa interagir com o sistema em qualquer plataforma.
+    * **Aplicação Web Responsiva:** Foco principal, acessível via navegador.
+    * **(Futuro) Executável Windows:** Empacotado com **Electron**.
+    * **(Futuro) Aplicativo Android:** Compilado a partir da mesma base de código com **Capacitor**.
 
 ### Backend (Servidor e Lógica de Negócio)
 
 * **Tecnologia:** **Java** com o framework **Spring Boot**.
-* **Função:** Gerenciar a lógica do negócio, processar as requisições do frontend e interagir com os bancos de dados.
+* **Função:** Servir como uma API RESTful para gerenciar toda a lógica de negócio e persistência de dados.
 
 ### Banco de Dados e Serviços Cloud (Free Tier)
 
-* **Banco de Dados Principal:** **PostgreSQL**. Utilizado para armazenar dados transacionais e complexos, como informações de produtos, estoque, vendas e clientes. Gerenciamento via **DBeaver**.
-* **Serviços de Autenticação e Mídia:** **Firebase**. Usado para autenticação de usuários e para armazenar as fotos dos produtos, aproveitando o plano gratuito (Spark Plan).
-
-## Tecnologias e Ferramentas
-
-* **Linguagens de Programação:** Java e **TypeScript**.
-* **Frameworks/Bibliotecas:** Spring Boot, **Angular**, **Ionic Framework**, Electron.
-* **Serviços Cloud:** Firebase (Authentication e Storage).
-* **Banco de Dados:** PostgreSQL.
-* **Ferramentas de Banco de Dados:** DBeaver.
-* **Controle de Versão:** Git e GitHub.
-* **IDE (Ambiente de Desenvolvimento Integrado):** Visual Studio Code.
-* **Ferramentas de Linha de Comando (CLI):** **Angular CLI** e **Ionic CLI**.
+* **Banco de Dados Principal:** **PostgreSQL** gerenciado via **Flyway Migrations**.
+* **Serviços de Autenticação e Mídia:** **Firebase** (Authentication e Storage).
 
 ## Como Iniciar o Projeto
 
-1.  **Instale as ferramentas de base:**
-    * Node.js e npm, Java JDK 17+, VS Code, Git, PostgreSQL, DBeaver, e Android Studio.
-
-2.  **Instale as ferramentas de linha de comando (CLIs) do Angular e Ionic:**
-    * Abra um terminal (PowerShell) e execute: `npm install -g @angular/cli @ionic/cli`
-
-3.  **Clone o repositório:**
-    * `git clone <url-do-seu-repositorio>`
-    * `cd estoque-elegante`
-
-4.  **Execute o Backend:**
-    * `cd backend`
-    * `./mvnw spring-boot:run`
-
-5.  **Execute o Frontend:**
-    * `cd frontend/app`
-    * `ionic serve`
+1.  **Instale as ferramentas de base:** Node.js, Java JDK 17+, VS Code, Git, PostgreSQL, DBeaver, Android Studio.
+2.  **Instale as CLIs:** `npm install -g @angular/cli @ionic/cli`
+3.  **Clone o repositório:** `git clone <url-do-repositorio>`
+4.  **Execute o Backend:** `cd backend` e `./mvnw spring-boot:run`
+5.  **Execute o Frontend:** `cd frontend/app` e `ionic serve`
 
 ## Contato
 

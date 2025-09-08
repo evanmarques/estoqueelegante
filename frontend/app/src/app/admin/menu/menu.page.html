@@ -1,0 +1,22 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Admin</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list id="inbox-list">
+        <ion-list-header>Estoque Elegante</ion-list-header>
+        <ion-note>painel de controle</ion-note>
+
+        <ion-item routerLink="/admin/produtos" routerDirection="root" lines="none">
+          <ion-icon aria-hidden="true" slot="start" name="albums-outline"></ion-icon>
+          <ion-label>Produtos</ion-label>
+        </ion-item>
+
+        </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-split-pane>
