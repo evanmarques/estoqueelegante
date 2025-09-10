@@ -1,60 +1,37 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { getStorage, ref, uploadString, getDownloadURL} from 'firebase/storage';
-import { initializeApp } from 'firebase/app';
-import { environment } from 'src/environments/environment';
+// ARQUIVO: frontend/app/src/app/services/produto.service.ts
 
-export interface Produto {
-  id: number;
-  nome: string;
-  descricao: string;
-  preco: number;
-  quantidadeEstoque: number;
-  barcode: string;
-}
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Produto } from '../model/produto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProdutoService {
 
-  private readonly apiUrl = 'http://localhost:8080/produtos';
+  private readonly API = 'http://localhost:8080/produtos';
 
   constructor(private http: HttpClient) { }
 
   listar(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.apiUrl);
+    return this.http.get<Produto[]>(this.API);
   }
 
-  cadastrar(produto: any): Observable<any> {
-    return this.http.post(this.apiUrl, produto);
+  // ADICIONE ESTE NOVO MÉTODO
+  cadastrarComFoto(produto: any, imagem: Blob | null): Observable<any> {
+    const formData = new FormData();
+
+    // 1. Adiciona os dados do produto como uma parte 'dados'
+    formData.append('dados', new Blob([JSON.stringify(produto)], { type: 'application/json' }));
+
+    // 2. Adiciona a imagem como uma parte 'imagem', se existir
+    if (imagem) {
+      // O nome do arquivo ('produto.jpg') é genérico, o backend irá renomear
+      formData.append('imagem', imagem, 'produto.jpg');
+    }
+
+    // O HttpClient detecta o FormData e envia como 'multipart/form-data'
+    return this.http.post(this.API, formData);
   }
-
-    // Busca um único produto pelo seu ID
-  buscarPorId(id: number): Observable<Produto> {
-    return this.http.get<Produto>(`${this.apiUrl}/${id}`);
-  }
-
-  // Envia os dados atualizados para o backend
-  atualizar(id: number, produto: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, produto);
-  }
-
-  // Envia o pedido de exclusão para o backend
-  excluir(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
-
-async uploadImage(base64Data: string, fileName: string): Promise<string> {
-    const storage = getStorage();
-    const storageRef = ref(storage, `products/${fileName}`);
-
-    // Faz o upload da imagem em formato base64
-    await uploadString(storageRef, base64Data, 'data_url');
-
-    // Retorna a URL pública da imagem
-    return await getDownloadURL(storageRef);
-}
-
 }

@@ -63,11 +63,56 @@
     </ion-list>
 
     <ion-img [src]="produto.imageURL || 'asserts/placeholder.png"></ion-img>
-    <ion-button expand="block" (click)="tirarFoto()">Tirar Foto</ion-button>></ion-button>
+    <ion-button expand="block" (click)="tirarFoto()">Tirar Foto</ion-button>
 
     <div class="ion-padding">
       <ion-button expand="block" type="submit" [disabled]="form.invalid">
-        Salvar Produto
+        Salvar Produto<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin/produtos"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastrar Produto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form">
+    <ion-item>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input formControlName="nome"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Descrição</ion-label>
+      <ion-input formControlName="descricao"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Preço</ion-label>
+      <ion-input formControlName="preco" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Quantidade em Estoque</ion-label>
+      <ion-input formControlName="quantityStock" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Código de Barras</ion-label>
+      <ion-input formControlName="codigobarras"></ion-input>
+    </ion-item>
+  </form>
+
+  <div class="ion-text-center ion-margin-top">
+    <img [src]="fotoUrl || 'assets/icon/placeholder.png'" alt="Imagem do produto" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
+  </div>
+
+  <ion-button expand="block" (click)="selecionarFoto()" class="ion-margin-top">
+    <ion-icon name="camera" slot="start"></ion-icon>
+    Selecionar Foto
+  </ion-button>
+
+  <ion-button expand="block" (click)="salvar()" class="ion-margin-top" [disabled]="form.invalid">
+    Salvar Produto
+  </ion-button>
+</ion-content>
       </ion-button>
     </div>
   </form>

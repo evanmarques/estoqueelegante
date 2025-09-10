@@ -1,73 +1,87 @@
+
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule, NavController, ToastController } from '@ionic/angular';
-import { ProdutoService } from '../../../services/produto.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ProdutoService } from 'src/app/services/produto.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-produto-cadastro',
   templateUrl: './produto-cadastro.page.html',
   styleUrls: ['./produto-cadastro.page.scss'],
-  standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ProdutoCadastroPage implements OnInit {
-
-  produto = {
-    nome: '',
-    descricao: '',
-    preco: null,
-    quantidadeEstoque: null,
-    barcode: ''
-  };
+  form: FormGroup;
+  fotoUrl: string | null = null;
+  fotoBlob: Blob | null = null;
 
   constructor(
+    private formBuilder: FormBuilder,
     private produtoService: ProdutoService,
-    private navCtrl: NavController,
-    private toastCtrl: ToastController // ADIÇÃO: Injetar o ToastController
-  ) { }
+    private router: Router,
+    private toastController: ToastController
+  ) {
+    // Inicializa o formulário com validações
+    this.form = this.formBuilder.group({
+      nome: ['', [Validators.required, Validators.minLength(3)]],
+      descricao: [''],
+      preco: [null, [Validators.required, Validators.min(0)]],
+      quantityStock: [null, [Validators.required, Validators.min(0)]],
+      codigobarras: ['', Validators.required],
+    });
+  }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  async selecionarFoto() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Prompt,
+        promptLabelHeader: 'Escolha uma opção',
+        promptLabelPhoto: 'Usar Galeria',
+        promptLabelPicture: 'Tirar Foto',
+      });
+
+      if (image && image.webPath) {
+        this.fotoUrl = image.webPath;
+        const response = await fetch(image.webPath);
+        this.fotoBlob = await response.blob();
+      }
+    } catch (error) {
+      console.error('Erro ao selecionar foto', error);
+      this.presentToast('Não foi possível selecionar a imagem.');
+    }
   }
 
   salvar() {
-    this.produtoService.cadastrar(this.produto).subscribe({
-      next: (response: any) => {
-        // ALTERAÇÃO: Chamar a função de Toast antes de voltar
-        this.exibirToast('Produto cadastrado com sucesso!', 'success');
-        this.navCtrl.back();
+    if (this.form.invalid) {
+      this.presentToast('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    const dadosProduto = this.form.value;
+    this.produtoService.cadastrarComFoto(dadosProduto, this.fotoBlob).subscribe({
+      next: () => {
+        this.presentToast('Produto cadastrado com sucesso!');
+        this.router.navigate(['/admin/produtos']);
       },
-      error: (error: any) => {
-        console.error('Erro ao cadastrar produto', error);
-        this.exibirToast('Erro ao cadastrar produto.', 'danger');
+      error: (err: any) => {
+        console.error('Erro ao cadastrar produto', err);
+        this.presentToast('Erro ao cadastrar produto. Tente novamente.');
       }
     });
   }
 
-  // ADIÇÃO: Função para criar e exibir a mensagem
-  async exibirToast(mensagem: string, cor: string) {
-    const toast = await this.toastCtrl.create({
-      message: mensagem,
-      duration: 2000, // 2 segundos
-      color: cor,
-      position: 'top'
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
     });
-    await toast.present();
+    toast.present();
   }
-
-  async tirarFoto() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl, //Retorna em base64
-      source: CameraSource.Prompt //Deixa o usuário escolher entre Câmerae Galeria
-    });
-
-    if (image.dataUrl) {
-      //Aqui você faria o upload e obteria a URL
-      //this.produto.imageUrl = await this.produtoService.uploadImage(...);
-    }
-  }
-
 }
