@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ produto?.nome || 'Detalhes do Produto' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="produto; else loading">
+
+    <div class="image-placeholder">
+      <ion-icon name="camera-outline"></ion-icon>
+    </div>
+
+    <div class="ion-padding">
+      <h1>{{ produto.nome }}</h1>
+
+      <ion-chip color="primary">
+        <ion-label>Estoque: {{ produto.quantidadeEstoque }}</ion-label>
+      </ion-chip>
+
+      <h2 class="price">R$ {{ produto.preco.toFixed(2) }}</h2>
+
+      <h3>Descrição</h3>
+      <p>{{ produto.descricao || 'Nenhuma descrição fornecida.' }}</p>
+
+      <ion-button expand="block" class="ion-margin-top">
+        Adicionar ao Carrinho
+        <ion-icon slot="end" name="cart-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+  </div>
+
+  <ng-template #loading>
+    <ion-spinner name="crescent" class="ion-padding"></ion-spinner>
+  </ng-template>
+</ion-content>

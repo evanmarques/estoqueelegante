@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { getStorage, ref, uploadString, getDownloadURL} from 'firebase/storage';
+import { initializeApp } from 'firebase/app';
+import { environment } from 'src/environments/environment';
 
 export interface Produto {
   id: number;
@@ -42,4 +45,16 @@ export class ProdutoService {
   excluir(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+async uploadImage(base64Data: string, fileName: string): Promise<string> {
+    const storage = getStorage();
+    const storageRef = ref(storage, `products/${fileName}`);
+
+    // Faz o upload da imagem em formato base64
+    await uploadString(storageRef, base64Data, 'data_url');
+
+    // Retorna a URL pública da imagem
+    return await getDownloadURL(storageRef);
+}
+
 }

@@ -25,7 +25,7 @@ public class ProdutoController {
     @Transactional // Avisa que este método faz uma transação com o banco de dados
     public void cadastrar(@RequestBody DadosCadastroProduto dados) {
         // O @RequestBody pega o corpo (JSON) da requisição e o converte para o nosso DTO
-        repository.save(new Produto(null, dados.nome(), dados.descricao(), dados.preco(), dados.quantidadeEstoque(), dados.barcode()));
+        repository.save(new Produto(null, dados.nome(), dados.descricao(), dados.preco(), dados.quantidadeEstoque(), dados.barcode(), dados.imageUrl()));
     }
 
     @GetMapping // Este método responde a requisições do tipo GET para "/produtos"
@@ -49,6 +49,7 @@ public class ProdutoController {
         produto.setPreco(dados.preco());
         produto.setQuantidadeEstoque(dados.quantidadeEstoque());
         produto.setBarcode(dados.barcode());
+        produto.setImageUrl(dados.imageUrl());
 
         repository.save(produto); // Salva as alterações
         return ResponseEntity.ok(produto);

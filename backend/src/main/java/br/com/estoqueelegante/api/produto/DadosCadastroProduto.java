@@ -8,6 +8,7 @@ public record DadosCadastroProduto(
     String descricao,
     double preco,
     int quantidadeEstoque,
-    String barcode
+    String barcode,
+    String imageUrl
 ) {
 }

@@ -1,0 +1,32 @@
+.image-placeholder {
+    height: 300px;
+    width: 100%;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    ion-icon {
+        font-size: 80px;
+        color: #ccc;
+    }
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--ion-color-primary);
+    margin: 16px 0;
+}
+
+h3 {
+    margin-top: 24px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+ion-spinner {
+    display: block;
+    margin: 48px auto;
+}

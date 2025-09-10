@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-// ADIÇÃO: Importar o ToastController
 import { IonicModule, NavController, ToastController } from '@ionic/angular';
 import { ProdutoService } from '../../../services/produto.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-produto-cadastro',
@@ -55,4 +55,19 @@ export class ProdutoCadastroPage implements OnInit {
     });
     await toast.present();
   }
+
+  async tirarFoto() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl, //Retorna em base64
+      source: CameraSource.Prompt //Deixa o usuário escolher entre Câmerae Galeria
+    });
+
+    if (image.dataUrl) {
+      //Aqui você faria o upload e obteria a URL
+      //this.produto.imageUrl = await this.produtoService.uploadImage(...);
+    }
+  }
+
 }

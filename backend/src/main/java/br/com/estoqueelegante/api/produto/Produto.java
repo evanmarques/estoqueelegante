@@ -37,4 +37,7 @@ public class Produto {
 
     @Column(name = "bar_code", unique = true)
     private String barcode;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 }
