@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, NavController } from '@ionic/angular';
+// ADIÇÃO: Importar o ToastController
+import { IonicModule, NavController, ToastController } from '@ionic/angular';
 import { ProdutoService } from '../../../services/produto.service';
 
 @Component({
@@ -23,23 +24,35 @@ export class ProdutoCadastroPage implements OnInit {
 
   constructor(
     private produtoService: ProdutoService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private toastCtrl: ToastController // ADIÇÃO: Injetar o ToastController
   ) { }
 
   ngOnInit() {
   }
 
   salvar() {
-    // Agora o método .cadastrar() é encontrado corretamente
     this.produtoService.cadastrar(this.produto).subscribe({
-      // Adicionamos os tipos: 'response' é do tipo 'any' e 'error' também
       next: (response: any) => {
-        console.log('Produto cadastrado com sucesso!', response);
+        // ALTERAÇÃO: Chamar a função de Toast antes de voltar
+        this.exibirToast('Produto cadastrado com sucesso!', 'success');
         this.navCtrl.back();
       },
       error: (error: any) => {
         console.error('Erro ao cadastrar produto', error);
+        this.exibirToast('Erro ao cadastrar produto.', 'danger');
       }
     });
+  }
+
+  // ADIÇÃO: Função para criar e exibir a mensagem
+  async exibirToast(mensagem: string, cor: string) {
+    const toast = await this.toastCtrl.create({
+      message: mensagem,
+      duration: 2000, // 2 segundos
+      color: cor,
+      position: 'top'
+    });
+    await toast.present();
   }
 }

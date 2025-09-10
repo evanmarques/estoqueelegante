@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, NavController, AlertController } from '@ionic/angular';
+// Importe o ToastController aqui
+import { IonicModule, NavController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Produto, ProdutoService } from '../../../services/produto.service';
 import { RouterModule } from '@angular/router';
 
@@ -19,21 +20,38 @@ export class ProdutoListaPage implements OnInit {
   constructor(
     private produtoService: ProdutoService,
     private navCtrl: NavController,
-    private alertCtrl: AlertController // Precisamos disto para o pop-up de confirmação
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController // << CORREÇÃO APLICADA AQUI
   ) { }
 
   ngOnInit() {
-    this.carregarProdutos();
+    // O ngOnInit é ótimo para o primeiro carregamento
+    // this.carregarProdutos(); // Removido para evitar carregamento duplicado
   }
 
   ionViewDidEnter() {
+    // Usamos o ionViewDidEnter para garantir que a lista seja
+    // atualizada toda vez que o usuário voltar para esta tela
     this.carregarProdutos();
   }
 
-  carregarProdutos() {
+  async carregarProdutos() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Carregando produtos...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
     this.produtoService.listar().subscribe({
-      next: (dados) => this.produtos = dados,
-      error: (erro) => console.error('Erro ao buscar produtos:', erro)
+      next: (dados) => {
+        this.produtos = dados;
+        loading.dismiss();
+      },
+      error: (erro) => {
+        console.error('Erro ao buscar produtos:', erro);
+        loading.dismiss();
+      }
     });
   }
 
@@ -55,13 +73,25 @@ export class ProdutoListaPage implements OnInit {
           text: 'Excluir',
           handler: () => {
             this.produtoService.excluir(id).subscribe(() => {
-              // Remove o produto da lista local para atualização instantânea da tela
               this.produtos = this.produtos.filter(p => p.id !== id);
+              // Agora a função de toast será encontrada corretamente
+              this.exibirToast('Produto excluído com sucesso!', 'success');
             });
           }
         }
       ]
     });
     await alert.present();
+  }
+
+  // Esta função agora funcionará pois this.toastCtrl existe
+  async exibirToast(mensagem: string, cor: string) {
+    const toast = await this.toastCtrl.create({
+      message: mensagem,
+      duration: 2000,
+      color: cor,
+      position: 'top'
+    });
+    await toast.present();
   }
 }

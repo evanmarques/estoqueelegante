@@ -22,7 +22,10 @@ A plataforma será primariamente uma aplicação web acessível por qualquer nav
 * **Dashboard Principal:** Visão geral das vendas, estoque baixo e atividade recente.
 * **Gestão de Produtos (CRUD):**
     * Cadastro, visualização, edição e remoção de produtos.
-    * Upload de imagens dos produtos via **Firebase Storage**.
+    * Upload de imagens dos produtos com suporte para:
+        * Câmera do dispositivo (Mobile/Web).
+        * Galeria de fotos (Mobile/Web).
+    * Armazenamento das imagens no **Firebase Storage**.
     * Controle de estoque com atualização automática.
 * **Gestão de Vendas:** Histórico de transações e detalhes de cada venda.
 * **Gestão de Clientes:** Cadastro e visualização de dados de clientes.
