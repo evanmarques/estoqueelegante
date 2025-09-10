@@ -1,15 +1,19 @@
+// ARQUIVO: frontend/app/src/app/admin/pages/produto-cadastro/produto-cadastro.page.ts
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // <-- Importe
 import { Router } from '@angular/router';
 import { ProdutoService } from 'src/app/services/produto.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { ToastController } from '@ionic/angular';
+import { ToastController, IonicModule } from '@ionic/angular'; // <-- Importe
+import { CommonModule } from '@angular/common'; // <-- Importe
 
 @Component({
   selector: 'app-produto-cadastro',
   templateUrl: './produto-cadastro.page.html',
   styleUrls: ['./produto-cadastro.page.scss'],
+  standalone: true, // <-- É standalone
+  imports: [IonicModule, CommonModule, ReactiveFormsModule], // <-- ADICIONE ESTES IMPORTS
 })
 export class ProdutoCadastroPage implements OnInit {
   form: FormGroup;
@@ -22,7 +26,6 @@ export class ProdutoCadastroPage implements OnInit {
     private router: Router,
     private toastController: ToastController
   ) {
-    // Inicializa o formulário com validações
     this.form = this.formBuilder.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       descricao: [''],
@@ -35,6 +38,7 @@ export class ProdutoCadastroPage implements OnInit {
   ngOnInit() {}
 
   async selecionarFoto() {
+    // ... (o resto do código permanece o mesmo)
     try {
       const image = await Camera.getPhoto({
         quality: 90,

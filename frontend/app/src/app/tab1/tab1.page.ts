@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 // ADIÇÃO: Importar o RouterModule
 import { RouterModule } from '@angular/router';
-import { Produto, ProdutoService } from '../services/produto.service';
+import { ProdutoService } from '../services/produto.service';
+import { Produto } from '../model/produto';
 
 @Component({
   selector: 'app-tab1',

@@ -4,11 +4,11 @@ package br.com.estoqueelegante.api.produto;
 // classes que servem apenas para guardar dados. O record já cria os campos,
 // construtor, getters, etc., automaticamente.
 public record DadosCadastroProduto(
-    String nome,
-    String descricao,
-    double preco,
-    int quantidadeEstoque,
-    String barcode,
+        String nome,
+        String descricao,
+        double preco,
+        int quantityStock,
+        String codigobarras,
     String imageUrl
 ) {
 }

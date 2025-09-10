@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { ProdutoService, Produto } from '../../../services/produto.service';
+import { ProdutoService } from '../../../services/produto.service'; // O caminho pode variar
+import { Produto } from '../../../model/produto'; // O caminho pode variar
 
 @Component({
   selector: 'app-produto-editar',

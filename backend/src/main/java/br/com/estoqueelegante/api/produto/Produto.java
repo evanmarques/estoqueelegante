@@ -1,43 +1,38 @@
+// ARQUIVO: backend/src/main/java/br/com/estoqueelegante/api/produto/Produto.java
+
 package br.com.estoqueelegante.api.produto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter; // <-- IMPORTE O GETTER
 import lombok.NoArgsConstructor;
+import lombok.Setter; // <-- IMPORTE O SETTER
 
-@Data // Combina @Getter, @Setter, @EqualsAndHashCode, @ToString
+@Table(name = "products")
+@Entity(name = "Produto")
+@Getter // <-- ADICIONE ESTA ANOTAÇÃO
+@Setter // <-- ADICIONE ESTA ANOTAÇÃO
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity // Mapeia esta classe para uma entidade JPA
-@Table(name = "products") // Mapeia para a tabela "products"
+@EqualsAndHashCode(of = "id")
 public class Produto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // O campo em Java se chama "nome", mas no banco a coluna será "name"
-    @Column(name = "name")
     private String nome;
-
-    @Column(name = "description")
     private String descricao;
-
-    @Column(name = "price")
     private double preco;
+    private int quantityStock;
+    private String codigobarras;
+    private String imagem;
 
-    // O campo em Java é "quantidadeEstoque", mas a coluna será "stock_quantity"
-    @Column(name = "stock_quantity")
-    private int quantidadeEstoque;
-
-    @Column(name = "bar_code", unique = true)
-    private String barcode;
-
-    @Column(name = "image_url")
-    private String imageUrl;
+    public Produto(DadosCadastroProduto dados) {
+        this.nome = dados.nome();
+        this.descricao = dados.descricao();
+        this.preco = dados.preco();
+        this.quantityStock = dados.quantityStock();
+        this.codigobarras = dados.codigobarras();
+    }
 }

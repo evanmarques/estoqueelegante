@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { Produto, ProdutoService } from '../../services/produto.service';
+import { ProdutoService } from '../../services/produto.service';
+import { Produto } from '../../model/produto';
 
 @Component({
   selector: 'app-produto-detalhe',
@@ -23,7 +24,7 @@ export class ProdutoDetalhePage implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    if (id) { 
       this.produtoService.buscarPorId(Number(id)).subscribe({
         next: (dados) => this.produto = dados,
         error: (erro) => console.error('Erro ao buscar detalhes do produto:', erro)

@@ -9,7 +9,6 @@ import { Produto } from '../model/produto';
   providedIn: 'root'
 })
 export class ProdutoService {
-
   private readonly API = 'http://localhost:8080/produtos';
 
   constructor(private http: HttpClient) { }
@@ -18,20 +17,26 @@ export class ProdutoService {
     return this.http.get<Produto[]>(this.API);
   }
 
-  // ADICIONE ESTE NOVO MÉTODO
+  // Método que já tínhamos
   cadastrarComFoto(produto: any, imagem: Blob | null): Observable<any> {
     const formData = new FormData();
-
-    // 1. Adiciona os dados do produto como uma parte 'dados'
     formData.append('dados', new Blob([JSON.stringify(produto)], { type: 'application/json' }));
-
-    // 2. Adiciona a imagem como uma parte 'imagem', se existir
     if (imagem) {
-      // O nome do arquivo ('produto.jpg') é genérico, o backend irá renomear
       formData.append('imagem', imagem, 'produto.jpg');
     }
-
-    // O HttpClient detecta o FormData e envia como 'multipart/form-data'
     return this.http.post(this.API, formData);
+  }
+
+  // ADICIONE OS MÉTODOS ABAIXO
+  buscarPorId(id: number): Observable<Produto> {
+    return this.http.get<Produto>(`${this.API}/${id}`);
+  }
+
+  atualizar(id: number, produto: Produto): Observable<Produto> {
+    return this.http.put<Produto>(`${this.API}/${id}`, produto);
+  }
+
+  excluir(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API}/${id}`);
   }
 }

@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 // Importe o ToastController aqui
 import { IonicModule, NavController, AlertController, LoadingController, ToastController } from '@ionic/angular';
-import { Produto, ProdutoService } from '../../../services/produto.service';
+import { ProdutoService } from '../../../services/produto.service';
+import { Produto } from '../../../model/produto';
 import { RouterModule } from '@angular/router';
 
 @Component({
