@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("produtos")
+@RequestMapping("products")
 @CrossOrigin(origins = "*")
 public class ProdutoController {
 
@@ -27,9 +27,9 @@ public class ProdutoController {
 
     @PostMapping
     @Transactional
-    public void cadastrar(@RequestPart("dados") DadosCadastroProduto dados,
+    public void cadastrar(@RequestPart("dados") ProductRegistrationData dados,
                           @RequestPart(value = "imagem", required = false) MultipartFile imagem) throws IOException {
-        Produto produto = new Produto(dados);
+        Product produto = new Product(dados);
         if (imagem != null && !imagem.isEmpty()) {
             Path uploadPath = Paths.get(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) {
@@ -38,18 +38,18 @@ public class ProdutoController {
             String nomeArquivo = UUID.randomUUID().toString() + "_" + imagem.getOriginalFilename();
             Path caminhoArquivo = uploadPath.resolve(nomeArquivo);
             Files.write(caminhoArquivo, imagem.getBytes());
-            produto.setImagem(nomeArquivo);
+            produto.setImageURL(nomeArquivo);
         }
         repository.save(produto);
     }
 
     @GetMapping
-    public List<Produto> listar() {
+    public List<Product> listar() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Product> buscarPorId(@PathVariable Long id) {
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -57,15 +57,15 @@ public class ProdutoController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<Produto> atualizar(@PathVariable Long id, @RequestBody Produto dadosProduto) {
+    public ResponseEntity<Product> atualizar(@PathVariable Long id, @RequestBody Product dadosProduto) {
         return repository.findById(id)
                 .map(produtoExistente -> {
-                    produtoExistente.setNome(dadosProduto.getNome());
-                    produtoExistente.setDescricao(dadosProduto.getDescricao());
-                    produtoExistente.setPreco(dadosProduto.getPreco());
-                    produtoExistente.setQuantityStock(dadosProduto.getQuantityStock());
+                    produtoExistente.setName(dadosProduto.getName());
+                    produtoExistente.setDescription(dadosProduto.getDescription());
+                    produtoExistente.setPrice(dadosProduto.getPrice());
+                    produtoExistente.setStockQuantity(dadosProduto.getStockQuantity());
                     // CORREÇÃO DA DIGITAÇÃO AQUI
-                    produtoExistente.setCodigobarras(dadosProduto.getCodigobarras());
+                    produtoExistente.setBarCode(dadosProduto.getBarCode());
                     return ResponseEntity.ok(repository.save(produtoExistente));
                 }).orElse(ResponseEntity.notFound().build());
     }

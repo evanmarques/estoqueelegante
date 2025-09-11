@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Produto } from '../model/produto';
+import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { initializeApp } from 'firebase/app';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +18,8 @@ export class ProdutoService {
 
   listar(): Observable<Produto[]> {
     return this.http.get<Produto[]>(this.API);
+
+  
   }
 
   // Método que já tínhamos
@@ -27,7 +32,17 @@ export class ProdutoService {
     return this.http.post(this.API, formData);
   }
 
-  // ADICIONE OS MÉTODOS ABAIXO
+async uploadImage(base64Data: string, fileName: string): Promise<string> {
+    const storage = getStorage();
+    const storageRef = ref(storage, `products/${fileName}`);
+
+    // Faz o upload da imagem em formato base64
+    await uploadString(storageRef, base64Data, 'data_url');
+
+    // Retorna a URL pública da imagem
+    return await getDownloadURL(storageRef);
+}
+
   buscarPorId(id: number): Observable<Produto> {
     return this.http.get<Produto>(`${this.API}/${id}`);
   }
